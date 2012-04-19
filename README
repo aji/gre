@@ -17,6 +17,10 @@ OPTIONS
   -try       Print commands into the buffer they will be executed
              in rather than executing them in the buffer as a command.
 
+  -me        Do NOT exclude yourself from the command. Default
+             behavior is to exclude the person issuing the command from
+             any matches.
+
   -channel   Iterate over lines in the current channel only (the default)
   -server    Iterate over lines in all channels in the current server
   -global    Iterate over all lines in all channels

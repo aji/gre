@@ -132,6 +132,8 @@ def gre_command(data, cur_buf, args):
     markfunc = mark_nick
     dupefunc = dupe_nick
 
+    excl_me = True
+
     action = weechat.command
 
     for opt in opts:
@@ -144,6 +146,9 @@ def gre_command(data, cur_buf, args):
 
         if opt == '-try':
             action = weechat.prnt
+
+        if opt == '-me':
+            excl_me = False
 
         if opt == '-c':
             markfunc = mark_channel
@@ -158,8 +163,13 @@ def gre_command(data, cur_buf, args):
     p = None
 
     for buf in iterfunc(cur_buf):
+        nick_me = weechat.buffer_get_string(buf, 'localvar_nick')
+
         for chan, nick, text in privmsgs(buf):
             m = text_re.search(text)
+
+            if excl_me and nick == nick_me:
+                continue
 
             if m and not dupefunc(chan, nick, p):
                 p = markfunc(chan, nick, p)
