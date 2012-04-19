@@ -1,14 +1,6 @@
 #!/usr/bin/python
 # gre.py -- Alex's g/re/ script
 
-# Syntax: /gre /buffer/text/ COMMAND ARGS...
-# Examples:
-#   /gre /^general/LOLSPAM/ kill $nick spammer
-#   /gre /^general.([^#])// kill $nick Don't PM me
-
-# gre goes down the list of buffers and for buffers names matching
-# /buffer/, executes COMMAND for lines matching /text/.
-
 import re
 import weechat
 
