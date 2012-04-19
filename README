@@ -1,0 +1,59 @@
+  This is a script for the WeeChat IRC client to allow a command to be
+  executed under certain conditions for certain nicknames and channels.
+
+  gre will iterate over the PRIVMSGs in certain buffers and compare
+  the text of each message to a regex. If the text matches the regex,
+  it will execute a command. Options are available to execute commands
+  once for each nick or channel or both.
+
+
+SYNTAX
+
+  /gre [-try] [-channel|-server|-global] [-n|-c|-cn] /regex/ command args...
+
+
+OPTIONS
+
+  -try       Print commands into the buffer they will be executed
+             in rather than executing them in the buffer as a command.
+
+  -channel   Iterate over lines in the current channel only (the default)
+  -server    Iterate over lines in all channels in the current server
+  -global    Iterate over all lines in all channels
+
+  -n         Execute the command once for each nicknames only (the default)
+  -c         Execute the command once in each channel only
+  -cn        Execute the command once for each nickname in each channel
+
+
+COMMAND REPLACEMENTS
+
+  The strings $n and $c in the command will be replaced with the nickname
+  and channel of matching lines respectively.
+
+
+EXAMPLES
+
+  /gre -n /SPAMSPAMSPAM/ /kill $n Don't spam, please
+      This will kill all users in the current channel who have said
+      something matching /SPAMSPAMSPAM/
+
+  /gre -server -cn /i love ramen/ /kick $c $n ME TOO
+      This will kick all users on the server from channels they have said
+      "i love ramen" in.
+
+  /gre -server -c /morespam/ /mode +mz
+      This will set flags +mz on channels in which something matching
+      /morespam/ has been said
+
+  /gre -try -server -n /^trololol$/ /msg OperServ AKILL ADD $n !T 1d trololol
+      This will do a dry-run to add a 1-day AKILL for users who have
+      sent messages consisting only of the text 'trololol'
+
+
+QUIRKS
+
+  I am lazy and took the easy way out with regex extraction. It simply
+  cuts at /, so your regex cannot contain the / character or gre will
+  get confused. This is on the back burner because such limitations can
+  be worked around easily, i.e. /one.two/ instead of /one\/two/
