@@ -159,9 +159,17 @@ def gre_command(data, cur_buf, args):
 
     for buf in iterfunc(cur_buf):
         for chan, nick, text in privmsgs(buf):
-            if text_re.search(text) and not dupefunc(chan, nick, p):
+            m = text_re.search(text)
+
+            if m and not dupefunc(chan, nick, p):
                 p = markfunc(chan, nick, p)
-                action(buf, rest.replace('$c', chan).replace('$n', nick))
+
+                command = rest.replace('$c', chan).replace('$n', nick)
+                lastindex = 0 if m.lastindex == None else 9 if m.lastindex > 9 else m.lastindex
+                for matchidx in range(lastindex + 1):
+                    command = command.replace('${}'.format(matchidx), m.group(matchidx))
+
+                action(buf, command)
 
     return weechat.WEECHAT_RC_OK
 

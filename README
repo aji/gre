@@ -29,7 +29,8 @@ OPTIONS
 COMMAND REPLACEMENTS
 
   The strings $n and $c in the command will be replaced with the nickname
-  and channel of matching lines respectively.
+  and channel of matching lines respectively. Also, $0..9 can be used
+  for back substitution as is typical with regexes.
 
 
 EXAMPLES
