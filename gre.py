@@ -26,7 +26,7 @@ def privmsgs(ptr):
 
     chan = weechat.buffer_get_string(ptr, 'localvar_channel')
 
-    while weechat.infolist_next(lines):
+    while weechat.infolist_prev(lines):
         kind, nick, text = lineextract(lines)
 
         if kind == 'irc_privmsg':
@@ -136,6 +136,8 @@ def gre_command(data, cur_buf, args):
 
     action = weechat.command
 
+    limit = -1
+
     for opt in opts:
         if opt == '-global':
             iterfunc = iter_global
@@ -160,16 +162,24 @@ def gre_command(data, cur_buf, args):
             markfunc = mark_channick
             dupefunc = dupe_channick
 
+        if opt[1:].isdigit():
+            limit = int(opt[1:])
+
     p = None
 
     for buf in iterfunc(cur_buf):
         nick_me = weechat.buffer_get_string(buf, 'localvar_nick')
 
+        count = 0
         for chan, nick, text in privmsgs(buf):
             m = text_re.search(text)
 
             if excl_me and nick == nick_me:
                 continue
+
+            if count == limit:
+                continue
+            count += 1
 
             if m and not dupefunc(chan, nick, p):
                 p = markfunc(chan, nick, p)
