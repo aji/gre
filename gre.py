@@ -195,6 +195,6 @@ def gre_command(data, cur_buf, args):
 
 def gre_init():
     weechat.register('gre', 'Alex Iadicicco', '0.1', 'GPL3', 'g/re/ functionality for WeeChat', '', '')
-    weechat.hook_command('gre', 'g/re/', '[-server|-global] [-c|-n|-cn] [-###] /text/ action', '', '', 'gre_command', '')
+    weechat.hook_command('gre', 'g/re/', '[-try] [-channel|-server|-global] [-c|-n|-cn] [-###] /text/ action', '', '', 'gre_command', '')
 
 gre_init()
