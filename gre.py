@@ -184,9 +184,9 @@ def gre_command(data, cur_buf, args):
             if m and not dupefunc(chan, nick, p):
                 p = markfunc(chan, nick, p)
 
-                command = rest.replace('$c', chan).replace('$n', nick)
+                command = rest.replace('$c', chan).replace('$n', nick).replace('$0', text)
                 lastindex = 0 if m.lastindex == None else 9 if m.lastindex > 9 else m.lastindex
-                for matchidx in range(lastindex + 1):
+                for matchidx in range(1, lastindex + 1):
                     command = command.replace('${}'.format(matchidx), m.group(matchidx))
 
                 action(buf, command)
